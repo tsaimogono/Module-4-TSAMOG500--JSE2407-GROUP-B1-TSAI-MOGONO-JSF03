@@ -27,38 +27,58 @@
     </nav>
   </template>
   
-  <script>
-  import { ref } from 'vue';
-  import { cart, wishlist, isLoggedIn } from '../stores';
-  
-  export default {
-    setup() {
-      const isMenuOpen = ref(false);
-  
-      const toggleMenu = () => {
-        isMenuOpen.value = !isMenuOpen.value;
-      };
-  
-      const handleResize = () => {
-        if (window.innerWidth > 768 && isMenuOpen.value) {
-          isMenuOpen.value = false;
-        }
-      };
-  
-      window.addEventListener('resize', handleResize);
-  
-      return {
-        isMenuOpen,
-        toggleMenu,
-        cart,
-        wishlist,
-        isLoggedIn,
-      };
-    },
-  };
-  </script>
-  
-  <style scoped>
-  /* No need for additional styles, using Tailwind CSS */
-  </style>
-  
+<script>
+import { ref } from 'vue';
+import { cart, wishlist, isLoggedIn } from '../stores';
+
+/**
+ * Vue component for the navigation bar.
+ * Handles responsive design and menu toggling.
+ * 
+ * @component
+ */
+export default {
+  setup() {
+    /**
+     * Reactive reference to track the state of the mobile menu.
+     * @type {import('vue').Ref<boolean>}
+     */
+    const isMenuOpen = ref(false);
+
+    /**
+     * Toggles the state of the mobile menu between open and closed.
+     * 
+     * @function
+     */
+    const toggleMenu = () => {
+      isMenuOpen.value = !isMenuOpen.value;
+    };
+
+    /**
+     * Closes the mobile menu if the window is resized to a width greater than 768 pixels.
+     * 
+     * @function
+     */
+    const handleResize = () => {
+      if (window.innerWidth > 768 && isMenuOpen.value) {
+        isMenuOpen.value = false;
+      }
+    };
+
+    // Add resize event listener
+    window.addEventListener('resize', handleResize);
+
+    return {
+      isMenuOpen,
+      toggleMenu,
+      cart,
+      wishlist,
+      isLoggedIn,
+    };
+  },
+};
+</script>
+
+<style scoped>
+/* No need for additional styles, using Tailwind CSS */
+</style>
