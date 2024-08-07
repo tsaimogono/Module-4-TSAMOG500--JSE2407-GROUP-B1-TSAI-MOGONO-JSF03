@@ -27,3 +27,38 @@
     </nav>
   </template>
   
+  <script>
+  import { ref } from 'vue';
+  import { cart, wishlist, isLoggedIn } from '../stores';
+  
+  export default {
+    setup() {
+      const isMenuOpen = ref(false);
+  
+      const toggleMenu = () => {
+        isMenuOpen.value = !isMenuOpen.value;
+      };
+  
+      const handleResize = () => {
+        if (window.innerWidth > 768 && isMenuOpen.value) {
+          isMenuOpen.value = false;
+        }
+      };
+  
+      window.addEventListener('resize', handleResize);
+  
+      return {
+        isMenuOpen,
+        toggleMenu,
+        cart,
+        wishlist,
+        isLoggedIn,
+      };
+    },
+  };
+  </script>
+  
+  <style scoped>
+  /* No need for additional styles, using Tailwind CSS */
+  </style>
+  
