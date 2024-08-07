@@ -16,6 +16,7 @@
       <div v-else class="text-center">Product not found.</div>
     </div>
   </template>
+  
   <script>
   import { onMounted, ref } from 'vue';
   import { useRoute } from 'vue-router';
