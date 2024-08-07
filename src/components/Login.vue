@@ -93,3 +93,49 @@
          } finally {
            this.loading = false;
          }
+      },
+      filterProducts() {
+        if (this.selectedCategory) {
+          this.filteredProducts = this.products.filter(
+            product => product.category === this.selectedCategory
+          );
+        } else {
+          this.filteredProducts = [...this.products];
+        }
+        this.sortProducts();
+      },
+      handleSort() {
+        this.sortProducts();
+      },
+      sortProducts() {
+        if (this.sorting === 'low') {
+          this.filteredProducts.sort((a, b) => a.price - b.price);
+        } else if (this.sorting === 'high') {
+          this.filteredProducts.sort((a, b) => b.price - a.price);
+        } else {
+          this.filteredProducts = [...this.originalProducts];
+          if (this.selectedCategory) {
+            this.filteredProducts = this.filteredProducts.filter(
+              product => product.category === this.selectedCategory
+            );
+          }
+        }
+      },
+      resetFilters() {
+        this.selectedCategory = '';
+        this.sorting = 'default';
+        this.filteredProducts = [...this.originalProducts];
+      },
+      addToCart(product) {
+        this.cart.push(product);
+      },
+    },
+    mounted() {
+      this.init();
+    },
+  };
+  </script>
+  
+  <style scoped>
+  /* Tailwind CSS utility classes are used, so no additional CSS is needed */
+  </style>  
