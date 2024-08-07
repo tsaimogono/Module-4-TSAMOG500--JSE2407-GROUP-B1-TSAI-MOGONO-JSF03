@@ -54,4 +54,42 @@
  </div>
 </div>
  </template>
-  
+   
+   <script>
+   import axios from 'axios';
+   
+   export default {
+     data() {
+       return {
+         products: [],
+         originalProducts: [],
+         filteredProducts: [],
+         categories: [],
+         selectedCategory: '',
+         sorting: 'default',
+         loading: true,
+         cart: [],
+       };
+     },
+     computed: {
+       cartCount() {
+         return this.cart.length;
+       },
+     },
+     methods: {
+       async init() {
+         this.loading = true;
+         try {
+           const [productsResponse, categoriesResponse] = await Promise.all([
+             axios.get('https://fakestoreapi.com/products'),
+             axios.get('https://fakestoreapi.com/products/categories'),
+           ]);
+           this.products = productsResponse.data;
+           this.originalProducts = [...this.products];
+           this.filteredProducts = [...this.products];
+           this.categories = categoriesResponse.data;
+         } catch (error) {
+           console.error('Error fetching products or categories:', error);
+         } finally {
+           this.loading = false;
+         }
