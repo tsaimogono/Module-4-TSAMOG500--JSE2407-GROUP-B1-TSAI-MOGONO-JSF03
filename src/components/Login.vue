@@ -54,29 +54,78 @@
  </div>
 </div>
  </template>
-   
    <script>
    import axios from 'axios';
    
+   /**
+    * Vue component for managing and displaying products.
+    */
    export default {
      data() {
        return {
+         /**
+          * Array to store all fetched products.
+          * @type {Array}
+          */
          products: [],
+   
+         /**
+          * Array to store the original list of products for resetting filters.
+          * @type {Array}
+          */
          originalProducts: [],
+   
+         /**
+          * Array to store products that match the current filters and sorting.
+          * @type {Array}
+          */
          filteredProducts: [],
+   
+         /**
+          * Array to store product categories fetched from the API.
+          * @type {Array}
+          */
          categories: [],
+   
+         /**
+          * Currently selected product category for filtering.
+          * @type {string}
+          */
          selectedCategory: '',
+   
+         /**
+          * Current sorting option.
+          * @type {string}
+          */
          sorting: 'default',
+   
+         /**
+          * Boolean indicating if data is still being loaded.
+          * @type {boolean}
+          */
          loading: true,
+   
+         /**
+          * Array to store products added to the cart.
+          * @type {Array}
+          */
          cart: [],
        };
      },
      computed: {
+       /**
+        * Computed property to get the number of items in the cart.
+        * @returns {number} Number of items in the cart.
+        */
        cartCount() {
          return this.cart.length;
        },
      },
      methods: {
+       /**
+        * Initializes component data by fetching products and categories.
+        * @returns {Promise<void>}
+        */
        async init() {
          this.loading = true;
          try {
@@ -93,49 +142,67 @@
          } finally {
            this.loading = false;
          }
-      },
-      filterProducts() {
-        if (this.selectedCategory) {
-          this.filteredProducts = this.products.filter(
-            product => product.category === this.selectedCategory
-          );
-        } else {
-          this.filteredProducts = [...this.products];
-        }
-        this.sortProducts();
-      },
-      handleSort() {
-        this.sortProducts();
-      },
-      sortProducts() {
-        if (this.sorting === 'low') {
-          this.filteredProducts.sort((a, b) => a.price - b.price);
-        } else if (this.sorting === 'high') {
-          this.filteredProducts.sort((a, b) => b.price - a.price);
-        } else {
-          this.filteredProducts = [...this.originalProducts];
-          if (this.selectedCategory) {
-            this.filteredProducts = this.filteredProducts.filter(
-              product => product.category === this.selectedCategory
-            );
-          }
-        }
-      },
-      resetFilters() {
-        this.selectedCategory = '';
-        this.sorting = 'default';
-        this.filteredProducts = [...this.originalProducts];
-      },
-      addToCart(product) {
-        this.cart.push(product);
-      },
-    },
-    mounted() {
-      this.init();
-    },
-  };
-  </script>
-  
-  <style scoped>
-  /* Tailwind CSS utility classes are used, so no additional CSS is needed */
-  </style>  
+       },
+   
+       /**
+        * Filters products based on the selected category and then sorts them.
+        */
+       filterProducts() {
+         if (this.selectedCategory) {
+           this.filteredProducts = this.products.filter(
+             product => product.category === this.selectedCategory
+           );
+         } else {
+           this.filteredProducts = [...this.products];
+         }
+         this.sortProducts();
+       },
+   
+       /**
+        * Calls the method to sort products based on the current sorting option.
+        */
+       handleSort() {
+         this.sortProducts();
+       },
+   
+       /**
+        * Sorts `filteredProducts` based on the current sorting option.
+        */
+       sortProducts() {
+         if (this.sorting === 'low') {
+           this.filteredProducts.sort((a, b) => a.price - b.price);
+         } else if (this.sorting === 'high') {
+           this.filteredProducts.sort((a, b) => b.price - a.price);
+         } else {
+           this.filteredProducts = [...this.originalProducts];
+           if (this.selectedCategory) {
+             this.filteredProducts = this.filteredProducts.filter(
+               product => product.category === this.selectedCategory
+             );
+           }
+         }
+       },
+   
+       /**
+        * Resets all filters and sorting to their default states.
+        */
+       resetFilters() {
+         this.selectedCategory = '';
+         this.sorting = 'default';
+         this.filteredProducts = [...this.originalProducts];
+       },
+   
+       /**
+        * Adds a product to the cart.
+        * @param {Object} product - The product to add to the cart.
+        */
+       addToCart(product) {
+         this.cart.push(product);
+       },
+     },
+     mounted() {
+       this.init();
+     },
+   };
+   </script>
+   
