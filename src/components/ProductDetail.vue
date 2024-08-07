@@ -16,3 +16,50 @@
       <div v-else class="text-center">Product not found.</div>
     </div>
   </template>
+  <script>
+  import { onMounted, ref } from 'vue';
+  import { useRoute } from 'vue-router';
+  import axios from 'axios';
+  
+  /**
+   * ProductDetail component to fetch and display details of a single product.
+   */
+  export default {
+    setup() {
+      // Use the route to get the product ID from the URL parameters
+      const route = useRoute();
+      const id = route.params.id;
+  
+      // Reactive references for product data, loading state, and error handling
+      const product = ref(null);  // Holds the product data
+      const loading = ref(true);  // Indicates if the data is still being fetched
+      const error = ref(null);    // Holds any error messages
+  
+      /**
+       * Fetch product details from the API when the component is mounted.
+       * Handles loading and error states.
+       */
+      onMounted(async () => {
+        try {
+          // Fetch product data from the API
+          const response = await axios.get(`https://fakestoreapi.com/products/${id}`);
+          product.value = response.data;  // Store the fetched product data
+        } catch (err) {
+          // Handle any errors that occur during the fetch
+          error.value = `Failed to fetch product with ID ${id}: ${err.message}`;
+        } finally {
+          // Set loading to false once the fetch operation is complete
+          loading.value = false;
+        }
+      });
+  
+      // Return the reactive references to be used in the template
+      return { product, loading, error };
+    },
+  };
+  </script>
+  
+  <style scoped>
+  /* No additional CSS needed, using Tailwind CSS */
+  </style>
+  
